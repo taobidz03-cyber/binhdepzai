@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bản Tin Học Đường — Số 12</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --coral:#FF6B5B;
+    --sun:#FFC93D;
+    --mint:#3FC1B0;
+    --sky:#3E8EDE;
+    --ink:#1B3A4B;
+    --paper:#FFF8EC;
+    --card:#FFFFFF;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 6% 12%, rgba(255,107,91,0.10) 0, transparent 40%),
+      radial-gradient(circle at 94% 8%, rgba(62,142,222,0.10) 0, transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(63,193,176,0.12) 0, transparent 45%);
+    color:var(--ink);
+    font-family:'Be Vietnam Pro', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.eyebrow,.tag,.masthead-title{ font-family:'Fredoka', sans-serif; }
+
+  a{color:inherit;}
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 20px; }
+
+  /* Masthead */
+  .masthead{
+    background:var(--ink);
+    color:var(--paper);
+    padding:22px 0 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  .masthead::after{
+    content:"";
+    position:absolute; left:0; right:0; bottom:-1px; height:16px;
+    background:
+      radial-gradient(circle at 8px 0, transparent 8px, var(--paper) 9px) repeat-x;
+    background-size:16px 16px;
+  }
+  .masthead-row{ display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+  .masthead-title{
+    font-size:clamp(2.2rem, 5vw, 3.4rem);
+    font-weight:700;
+    letter-spacing:0.5px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .masthead-title .dot{
+    width:14px; height:14px; border-radius:50%;
+    background:var(--sun); display:inline-block;
+  }
+  .masthead-meta{
+    text-align:right;
+    font-size:0.92rem;
+    color:#BFD9E0;
+  }
+  .masthead-meta strong{ color:var(--sun); }
+  .masthead-sub{
+    margin-top:6px;
+    font-size:1rem;
+    color:#9FC6CE;
+    max-width:560px;
+  }
+
+  /* Ticker */
+  .ticker{
+    background:var(--sun);
+    color:var(--ink);
+    font-weight:600;
+    font-size:0.92rem;
+    padding:9px 0;
+    overflow:hidden;
+    white-space:nowrap;
+    border-bottom:3px solid var(--ink);
+  }
+  .ticker-track{
+    display:inline-block;
+    padding-left:100%;
+    animation:scroll 26s linear infinite;
+  }
+  .ticker-track span{ margin-right:48px; }
+  @keyframes scroll{ 0%{transform:translateX(0);} 100%{transform:translateX(-100%);} }
+  @media (prefers-reduced-motion: reduce){ .ticker-track{ animation:none; padding-left:0; } }
+
+  /* Hero */
+  .hero{ padding:44px 0 30px; }
+  .hero-card{
+    background:var(--coral);
+    color:#fff;
+    border-radius:28px;
+    padding:38px clamp(20px,4vw,48px);
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:28px;
+    align-items:center;
+    position:relative;
+    box-shadow:0 18px 40px -18px rgba(255,107,91,0.55);
+  }
+  .hero-eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(255,255,255,0.18);
+    padding:6px 14px; border-radius:999px;
+    font-size:0.82rem; font-weight:600; letter-spacing:0.4px;
+    text-transform:uppercase;
+    width:fit-content;
+    margin-bottom:14px;
+  }
+  .hero-card h1{
+    font-size:clamp(1.7rem, 3.4vw, 2.5rem);
+    font-weight:600;
+    line-height:1.2;
+    margin-bottom:14px;
+  }
+  .hero-card p{ font-size:1.02rem; color:#FFEBE7; max-width:46ch; }
+  .hero-stats{
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .stat-pill{
+    background:rgba(255,255,255,0.16);
+    border-radius:16px;
+    padding:14px 18px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .stat-pill .num{ font-family:'Fredoka'; font-size:1.5rem; font-weight:700; }
+  .stat-pill .lbl{ font-size:0.82rem; color:#FFE3DF; text-align:right; }
+  @media (max-width:720px){ .hero-card{ grid-template-columns:1fr; } }
+
+  /* Section headers */
+  .section{ padding:34px 0 6px; }
+  .section-head{
+    display:flex; align-items:center; gap:12px; margin-bottom:20px;
+  }
+  .section-head .badge{
+    width:38px; height:38px; border-radius:11px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.2rem;
+  }
+  .section-head h2{ font-size:1.5rem; font-weight:600; }
+
+  /* News grid — scrapbook cards */
+  .news-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+    gap:22px;
+    padding-bottom:10px;
+  }
+  .news-card{
+    background:var(--card);
+    border-radius:18px;
+    padding:22px 20px 20px;
+    position:relative;
+    box-shadow:0 10px 24px -14px rgba(27,58,75,0.25);
+    transition:transform 0.2s ease;
+  }
+  .news-card:hover{ transform:translateY(-4px); }
+  .tag{
+    position:absolute; top:-12px; left:18px;
+    font-size:0.72rem; font-weight:600; letter-spacing:0.3px;
+    color:#fff; padding:5px 12px; border-radius:999px;
+    text-transform:uppercase;
+    transform:rotate(-3deg);
+    box-shadow:0 4px 10px -4px rgba(0,0,0,0.35);
+  }
+  .news-card h3{ font-size:1.14rem; margin:12px 0 8px; font-weight:600; }
+  .news-card p{ font-size:0.93rem; color:#48626F; }
+  .news-card .meta{
+    margin-top:12px; font-size:0.78rem; color:#8AA0A9;
+    display:flex; gap:10px; align-items:center;
+  }
+  .c1{ background:var(--coral); } .c2{ background:var(--sky); }
+  .c3{ background:var(--mint); } .c4{ background:#8A63D2; }
+
+  /* Upcoming events strip */
+  .events{
+    display:flex; gap:16px; overflow-x:auto; padding:6px 4px 20px;
+  }
+  .event-card{
+    min-width:170px; flex:0 0 auto;
+    background:var(--ink); color:var(--paper);
+    border-radius:16px; padding:18px;
+  }
+  .event-date{
+    font-family:'Fredoka'; font-size:1.6rem; font-weight:700; color:var(--sun);
+    line-height:1;
+  }
+  .event-month{ font-size:0.78rem; color:#9FC6CE; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; }
+  .event-card h4{ font-size:0.95rem; font-weight:600; margin-bottom:4px; }
+  .event-card span{ font-size:0.78rem; color:#9FC6CE; }
+
+  /* Voices / quote corner */
+  .voices{
+    background:var(--mint);
+    border-radius:24px;
+    padding:32px clamp(20px,4vw,44px);
+    color:#04332C;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:26px;
+    margin:10px 0 40px;
+  }
+  .voice-card{ background:rgba(255,255,255,0.55); border-radius:16px; padding:18px 20px; }
+  .voice-card p{ font-size:0.96rem; margin-bottom:10px; }
+  .voice-card .who{ font-size:0.82rem; font-weight:700; }
+  @media (max-width:720px){ .voices{ grid-template-columns:1fr; } }
+
+  footer{
+    background:var(--ink); color:#9FC6CE;
+    padding:28px 0; margin-top:20px; font-size:0.85rem;
+  }
+  footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+  footer strong{ color:var(--paper); }
+</style>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="wrap">
+      <div class="masthead-row">
+        <div class="masthead-title"><span class="dot"></span>Bản Tin Học Đường - Thuong Lam City <3</div>
+        <div class="masthead-meta">Số 12 · Tháng 7/2026<br><strong>Trường THCS &amp; Thuong Lam</strong></div>
+      </div>
+      <p class="masthead-sub">Góc tin tức <3, hoạt động phong trào và những gương mặt học sinh nổi bật trong tuần — do Ban Truyền Thông học sinh thực hiện.</p>
+    </div>
+  </header>
+
+  <div class="ticker">
+    <div class="ticker-track">
+      <span>📣 Đăng ký CLB Kỹ năng mở đến hết Chủ nhật</span>
+      <span>🏆 Đội bóng đá lớp 9A giành cúp Hội thao mùa hè</span>
+      <span>🎨 Triển lãm tranh "Sắc màu tuổi học trò" khai mạc thứ Sáu</span>
+      <span>📚 Thư viện trường mở cửa xuyên trưa tuần ôn tập</span>
+      <span>📣 Đăng ký CLB Kỹ năng mở đến hết Chủ nhật</span>
+      <span>🏆 Đội bóng đá lớp 9A giành cúp Hội thao mùa hè</span>
+    </div>
+  </div>
+
+  <main class="wrap">
+
+    <section class="hero">
+      <div class="hero-card">
+        <div>
+          <span class="hero-eyebrow">⭐ Tin nổi bật</span>
+          <h1>Hội thao mùa hè 2026 khép lại sôi động với hơn 800 học sinh tham gia</h1>
+          <p>Ba ngày thi đấu, mười hai bộ môn, và một sân trường chưa bao giờ náo nhiệt đến thế. Khối 9 giành ngôi vô địch toàn đoàn sau trận kéo co nghẹt thở ở phút chót.</p>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-pill"><span class="num">800+</span><span class="lbl">học sinh<br>tham gia</span></div>
+          <div class="stat-pill"><span class="num">12</span><span class="lbl">bộ môn<br>thi đấu</span></div>
+          <div class="stat-pill"><span class="num">3</span><span class="lbl">ngày<br>tranh tài</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="badge" style="background:#FFE1DC;">📰</div>
+        <h2>Tin tức &amp; hoạt động</h2>
+      </div>
+      <div class="news-grid">
+        <article class="news-card">
+          <span class="tag c1">Văn nghệ</span>
+          <h3>Đêm hội "Giai điệu học trò" quy tụ 20 tiết mục đặc sắc</h3>
+          <p>Từ hợp xướng đến nhảy hiện đại, học sinh toàn trường mang đến một đêm diễn đầy màu sắc để gây quỹ cho thư viện.</p>
+          <div class="meta">🗓 20/07 · ✍️ Ban Văn nghệ</div>
+        </article>
+        <article class="news-card">
+          <span class="tag c2">Học thuật</span>
+          <h3>Đội tuyển Toán giành 2 giải Nhất kỳ thi cấp Thành phố</h3>
+          <p>Sau ba tháng ôn luyện, đội tuyển của trường xuất sắc mang về thành tích cao nhất trong 5 năm trở lại đây.</p>
+          <div class="meta">🗓 18/07 · ✍️ Tổ Toán</div>
+        </article>
+        <article class="news-card">
+          <span class="tag c3">Tình nguyện</span>
+          <h3>CLB Xanh trồng thêm 150 cây tại công viên phường</h3>
+          <p>Hoạt động nằm trong chuỗi sự kiện "Trường học xanh" hưởng ứng Ngày Môi trường Thế giới.</p>
+          <div class="meta">🗓 15/07 · ✍️ CLB Xanh</div>
+        </article>
+        <article class="news-card">
+          <span class="tag c4">Vinh danh</span>
+          <h3>Học sinh Minh Anh (11A2) đạt học bổng trao đổi tại Nhật Bản</h3>
+          <p>Là một trong ba học sinh cả nước được chọn cho chương trình trao đổi văn hoá kéo dài 4 tuần.</p>
+          <div class="meta">🗓 12/07 · ✍️ Ban Truyền Thông</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="badge" style="background:#DDEBFB;">🗓️</div>
+        <h2>Sự kiện sắp tới</h2>
+      </div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-date">05</div>
+          <div class="event-month">Tháng 8</div>
+          <h4>Ngày hội CLB</h4>
+          <span>Sân trường, 14h00</span>
+        </div>
+        <div class="event-card">
+          <div class="event-date">10</div>
+          <div class="event-month">Tháng 8</div>
+          <h4>Thi hùng biện tiếng Anh</h4>
+          <span>Hội trường A, 8h00</span>
+        </div>
+        <div class="event-card">
+          <div class="event-date">18</div>
+          <div class="event-month">Tháng 8</div>
+          <h4>Triển lãm khoa học</h4>
+          <span>Nhà thể chất, cả ngày</span>
+        </div>
+        <div class="event-card">
+          <div class="event-date">25</div>
+          <div class="event-month">Tháng 8</div>
+          <h4>Lễ khai giảng năm học mới</h4>
+          <span>Sân trường, 7h30</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="voices">
+      <div class="voice-card">
+        <p>"Lần đầu tiên em thấy cả sân trường hò reo cho đội của lớp mình như vậy. Mệt nhưng vui lắm ạ!"</p>
+        <div class="who">— Bảo Ngọc, lớp 8A3</div>
+      </div>
+      <div class="voice-card">
+        <p>"Đội Toán tụi mình đã thức trắng mấy đêm để ôn, nhưng nhìn lại thì xứng đáng từng phút."</p>
+        <div class="who">— Đức Huy, lớp 11A1</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div>Bản Tin Học Đường — Ấn phẩm nội bộ của học sinh</div>
+      <div><strong>Ban Truyền Thông</strong> · Số 12, Tháng 7/2026</div>
+    </div>
+  </footer>
+
+</body>
+</html>
