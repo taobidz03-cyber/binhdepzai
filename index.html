@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bình Đẹp Zai — iOS Style</title>
+<style>
+  :root{
+    --bg-top:#2b0f26;
+    --bg-bottom:#0a0410;
+    --accent:#ff375f;
+    --accent-soft:#ff6f91;
+    --glass:rgba(255,255,255,0.08);
+    --glass-border:rgba(255,255,255,0.18);
+    --text:#fdf3f6;
+    --text-dim:rgba(253,243,246,0.65);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:-apple-system,'SF Pro Display',system-ui,'Segoe UI',sans-serif;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(255,90,140,0.25), transparent 45%),
+      radial-gradient(circle at 80% 85%, rgba(120,40,160,0.35), transparent 50%),
+      linear-gradient(180deg,var(--bg-top),var(--bg-bottom));
+    color:var(--text);
+    overflow-x:hidden;
+  }
+  .device{
+    max-width:420px;
+    margin:0 auto;
+    min-height:100vh;
+    padding:44px 20px 40px;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ambient floating cherries */
+  .petal{
+    position:fixed;
+    top:-40px;
+    font-size:22px;
+    opacity:0.55;
+    filter:drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+    animation:fall linear infinite;
+    pointer-events:none;
+  }
+  @keyframes fall{
+    0%{transform:translateY(0) rotate(0deg);opacity:0;}
+    10%{opacity:0.6;}
+    100%{transform:translateY(110vh) rotate(360deg);opacity:0;}
+  }
+
+  /* status bar */
+  .statusbar{
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:0.2px;
+    padding:0 4px 26px;
+    opacity:0.95;
+  }
+  .statusbar .icons{display:flex;gap:6px;align-items:center;}
+
+  /* lock screen clock */
+  .lock-clock{
+    text-align:center;
+    margin-top:6px;
+    margin-bottom:18px;
+    animation:fadeDown 0.9s ease both;
+  }
+  .lock-clock .time{
+    font-size:78px;
+    font-weight:700;
+    letter-spacing:-2px;
+    line-height:1;
+    text-shadow:0 6px 30px rgba(255,55,95,0.35);
+  }
+  .lock-clock .date{
+    margin-top:8px;
+    font-size:16px;
+    color:var(--text-dim);
+    font-weight:500;
+  }
+
+  @keyframes fadeDown{
+    from{opacity:0; transform:translateY(-14px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  /* profile card */
+  .profile{
+    margin:14px auto 26px;
+    width:100%;
+    max-width:340px;
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-radius:28px;
+    padding:22px 20px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.35);
+    animation:riseIn 0.8s 0.15s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes riseIn{
+    from{opacity:0; transform:translateY(22px) scale(0.96);}
+    to{opacity:1; transform:translateY(0) scale(1);}
+  }
+  .avatar{
+    width:60px;height:60px;border-radius:50%;
+    background:linear-gradient(140deg,var(--accent),#ff9ec4 60%, #a83279);
+    display:flex;align-items:center;justify-content:center;
+    font-size:28px;
+    box-shadow:0 0 0 3px rgba(255,255,255,0.15), 0 8px 20px rgba(255,55,95,0.4);
+    flex-shrink:0;
+  }
+  .profile .who{flex:1;}
+  .profile .name{
+    font-size:19px;
+    font-weight:700;
+    display:flex;align-items:center;gap:6px;
+  }
+  .profile .sub{
+    font-size:13px;
+    color:var(--text-dim);
+    margin-top:3px;
+  }
+  .badge{
+    font-size:11px;
+    font-weight:700;
+    background:var(--accent);
+    color:#fff;
+    padding:4px 9px;
+    border-radius:999px;
+    letter-spacing:0.3px;
+  }
+
+  /* notifications */
+  .notif{
+    width:100%;
+    max-width:340px;
+    margin:0 auto 10px;
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border-radius:20px;
+    padding:14px 16px;
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    animation:riseIn 0.7s both;
+    animation-delay:calc(var(--i) * 0.12s + 0.25s);
+    transition:transform .25s ease, background .25s ease;
+  }
+  .notif:active{transform:scale(0.97); background:rgba(255,255,255,0.14);}
+  .notif .icon{
+    width:34px;height:34px;border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:17px;flex-shrink:0;
+    background:linear-gradient(135deg,#ff5a8c,#c23bff);
+  }
+  .notif .body{flex:1;}
+  .notif .title-row{display:flex;justify-content:space-between;font-size:13px;font-weight:700;}
+  .notif .time{font-weight:400;color:var(--text-dim);font-size:12px;}
+  .notif .msg{font-size:13px;color:var(--text-dim);margin-top:3px;line-height:1.35;}
+
+  /* home indicator / swipe hint */
+  .swipe-hint{
+    text-align:center;
+    font-size:12px;
+    color:var(--text-dim);
+    margin:22px 0 8px;
+    letter-spacing:0.4px;
+    animation:pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:0.4;}50%{opacity:0.9;}}
+
+  /* home screen grid */
+  .homescreen{
+    margin-top:auto;
+    padding-top:18px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:22px 14px;
+    padding:0 4px;
+  }
+  .app{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    cursor:pointer;
+  }
+  .app .icon{
+    width:58px;height:58px;
+    border-radius:16px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px;
+    background:linear-gradient(150deg,var(--icon-a,#ff5a8c),var(--icon-b,#7b2ff7));
+    box-shadow:0 6px 14px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.25);
+    transition:transform .18s cubic-bezier(.3,1.5,.4,1), box-shadow .18s ease;
+    position:relative;
+  }
+  .app .icon::after{
+    content:"";
+    position:absolute;inset:0;
+    border-radius:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.25), rgba(255,255,255,0) 40%);
+    pointer-events:none;
+  }
+  .app:active .icon{transform:scale(0.86);}
+  .app .label{font-size:11.5px;color:var(--text);text-shadow:0 1px 3px rgba(0,0,0,0.5);}
+  .app .icon.pop{animation:pop 0.6s cubic-bezier(.3,1.7,.4,1) both;}
+  @keyframes pop{
+    0%{transform:scale(0.3) rotate(-8deg); opacity:0;}
+    70%{transform:scale(1.08) rotate(3deg); opacity:1;}
+    100%{transform:scale(1) rotate(0deg);}
+  }
+
+  .dock{
+    margin-top:20px;
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border-radius:26px;
+    padding:12px 16px;
+    display:flex;
+    justify-content:space-around;
+  }
+  .dock .app .icon{width:52px;height:52px;}
+
+  .home-bar{
+    width:130px;height:5px;
+    background:rgba(255,255,255,0.75);
+    border-radius:99px;
+    margin:18px auto 0;
+  }
+
+  /* toast on tap */
+  .toast{
+    position:fixed;
+    left:50%; bottom:36px;
+    transform:translateX(-50%) translateY(20px);
+    background:rgba(20,20,25,0.85);
+    border:1px solid rgba(255,255,255,0.15);
+    backdrop-filter:blur(14px);
+    padding:10px 18px;
+    border-radius:14px;
+    font-size:13px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+    z-index:50;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="device">
+
+  <div class="statusbar">
+    <span id="clock-mini">9:41</span>
+    <span class="icons">
+      <span>••••</span><span>📶</span><span>🔋</span>
+    </span>
+  </div>
+
+  <div class="lock-clock">
+    <div class="time" id="bigtime">9:41</div>
+    <div class="date" id="bigdate">Thứ Ba, 28 Tháng 7</div>
+  </div>
+
+  <div class="profile">
+    <div class="avatar">🍒</div>
+    <div class="who">
+      <div class="name">Bình Đẹp Zai <span style="font-size:14px;">🍒</span></div>
+      <div class="sub">Online • đang chill</div>
+    </div>
+    <div class="badge">VIP</div>
+  </div>
+
+  <div class="notif" style="--i:0">
+    <div class="icon">💬</div>
+    <div class="body">
+      <div class="title-row"><span>Tin nhắn</span><span class="time">now</span></div>
+      <div class="msg">Bình đẹp zai ơi, hôm nay outfit nào đây? 🍒✨</div>
+    </div>
+  </div>
+
+  <div class="notif" style="--i:1">
+    <div class="icon">🔥</div>
+    <div class="body">
+      <div class="title-row"><span>Streak</span><span class="time">2m</span></div>
+      <div class="msg">7 ngày liên tiếp giữ phong độ đỉnh cao.</div>
+    </div>
+  </div>
+
+  <div class="swipe-hint">vuốt lên để mở khóa ↑</div>
+
+  <div class="homescreen">
+    <div class="grid" id="app-grid"></div>
+
+    <div class="dock" id="dock"></div>
+    <div class="home-bar"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // live clock
+  function pad(n){return n.toString().padStart(2,'0');}
+  function updateClock(){
+    const now = new Date();
+    let h = now.getHours();
+    const m = pad(now.getMinutes());
+    const timeStr = `${h}:${m}`;
+    document.getElementById('bigtime').textContent = timeStr;
+    document.getElementById('clock-mini').textContent = timeStr;
+    const days = ['Chủ Nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
+    const months = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+    document.getElementById('bigdate').textContent =
+      `${days[now.getDay()]}, ${now.getDate()} Tháng ${months[now.getMonth()]}`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000 * 15);
+
+  // floating cherry petals
+  const emojis = ['🍒','✨','💗'];
+  for(let i=0;i<14;i++){
+    const p = document.createElement('div');
+    p.className='petal';
+    p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    p.style.left = Math.random()*100+'vw';
+    p.style.animationDuration = (8+Math.random()*10)+'s';
+    p.style.animationDelay = (Math.random()*10)+'s';
+    p.style.fontSize = (14+Math.random()*14)+'px';
+    document.body.appendChild(p);
+  }
+
+  // app grid data
+  const apps = [
+    {icon:'📷', label:'Camera', a:'#8e9eff', b:'#3d4bd8'},
+    {icon:'🎵', label:'Nhạc', a:'#ff5a8c', b:'#c23bff'},
+    {icon:'💬', label:'Chat', a:'#3ddc97', b:'#0f9b6b'},
+    {icon:'🛒', label:'Mua sắm', a:'#ffb45a', b:'#ff5a5a'},
+    {icon:'🎮', label:'Game', a:'#ff5a5a', b:'#9c1f1f'},
+    {icon:'📈', label:'Thống kê', a:'#5ad1ff', b:'#1f6fbf'},
+    {icon:'🍒', label:'Bình Zai', a:'#ff375f', b:'#a8206e'},
+    {icon:'⚙️', label:'Cài đặt', a:'#8a8f98', b:'#4b4f57'},
+  ];
+  const grid = document.getElementById('app-grid');
+  apps.forEach((app, i)=>{
+    const el = document.createElement('div');
+    el.className='app';
+    el.innerHTML = `<div class="icon pop" style="--icon-a:${app.a};--icon-b:${app.b}; animation-delay:${0.3+i*0.06}s">${app.icon}</div><div class="label">${app.label}</div>`;
+    el.addEventListener('click', ()=>showToast(`Mở ${app.label}...`));
+    grid.appendChild(el);
+  });
+
+  const dockApps = [
+    {icon:'📞', a:'#3ddc97', b:'#0f9b6b'},
+    {icon:'✉️', a:'#5ad1ff', b:'#1f6fbf'},
+    {icon:'🌐', a:'#8e9eff', b:'#3d4bd8'},
+    {icon:'🍒', a:'#ff375f', b:'#a8206e'},
+  ];
+  const dock = document.getElementById('dock');
+  dockApps.forEach(app=>{
+    const el = document.createElement('div');
+    el.className='app';
+    el.innerHTML = `<div class="icon" style="--icon-a:${app.a};--icon-b:${app.b}">${app.icon}</div>`;
+    el.addEventListener('click', ()=>showToast('Mở ứng dụng...'));
+    dock.appendChild(el);
+  });
+
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(()=>t.classList.remove('show'), 1400);
+  }
+
+  // tap profile card for a lil reaction
+  document.querySelector('.profile').addEventListener('click', ()=>{
+    showToast('Bình đẹp zai thật đấy 🍒');
+  });
+</script>
+
+</body>
+</html>
